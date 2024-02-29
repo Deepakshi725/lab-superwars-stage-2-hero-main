@@ -23,25 +23,24 @@ const PLAYERS = [
 
 // initialize players with image and strength
 const initPlayers = (players) => {
-    let detailedPlayers = [];
     // Create players using for loop
     // Type your code here
     const types = ['hero', 'villain'];
     let typeIndex = 0;
 
-    for (let i = 0; i < players.length; i++) {
+    return players.map((playerName, index) => {
         const player = {
-            name: players[i],
+            name: playerName,
             strength: Math.floor(Math.random() * 100) + 1, // Default strength as any number
-            imageUrl: "images/super-" + (i + 1) + ".png",
+            imageUrl: `images/super-${index + 1}.png`,
             type: types[typeIndex]
         };
-        detailedPlayers.push(player);
 
         // Alternate between hero and villain types
         typeIndex = (typeIndex + 1) % types.length;
-    }
-    return detailedPlayers;
+
+        return player;
+    });
 }
 
 // getting random strength
@@ -52,24 +51,23 @@ const getRandomStrength = () => {
 }
 
 const buildPlayers = (players, type) => {
-    let fragment = '';
+    //let fragment = '';
 
     // Loop through players and accumulate HTML template
     // depending of type of player(hero|villain)
     // Type your code here
     const filteredPlayers = players.filter(player => player.type === type);
+    
+    const htmlTemplate = filteredPlayers.map(player => `
+        <div class="player">
+            <img src="${player.imageUrl}" alt="${player.name}">
+            <div class="name">${player.name}</div>
+            <div class="strength">${player.strength}</div>
+        </div>
+    `).join('');
 
-    for (const player of filteredPlayers) {
-        fragment += `
-            <div class="player">
-                <img src="${player.imageUrl}" alt="${player.name}">
-                <div class="name">${player.name}</div>
-                <div class="strength">${player.strength}</div>
-            </div>
-        `;
-    }
-
-    return fragment;
+    return htmlTemplate;
+   
 }
 // Display players in HTML
 const viewPlayers = (players) => {
